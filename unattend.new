@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend">
+    <settings pass="generalize">
+        <component name="Microsoft-Windows-Security-SPP" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SkipRearm>1</SkipRearm>
+        </component>
+    </settings>
+    <settings pass="specialize">
+        <component name="Microsoft-Windows-Deployment" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <RunSynchronous>
+                <RunSynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <Path>net user administrator /active:yes</Path>
+                </RunSynchronousCommand>
+            </RunSynchronous>
+        </component>
+        <component name="Microsoft-Windows-Security-SPP-UX" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <SkipAutoActivation>true</SkipAutoActivation>
+        </component>
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <CopyProfile>true</CopyProfile>
+            <ShowWindowsLive>false</ShowWindowsLive>
+            <TimeZone>{*Central Standard Time*}</TimeZone>
+            <ComputerName>*</ComputerName>
+            <RegisteredOrganization>{*SDOB*}</RegisteredOrganization>
+            <RegisteredOwner>{*SDOB*}</RegisteredOwner>
+        </component>
+        <component name="Microsoft-Windows-UnattendedJoin" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <Identification>
+                <UnsecureJoin>false</UnsecureJoin>
+                <Credentials>
+                    <Domain>{*AD.BARABOOSCHOOLS.NET*}</Domain>
+                    <Password>{*password of ad user with join privileges*}</Password>
+                    <Username>{*ad user with join privileges*}</Username>
+                </Credentials>
+                <JoinDomain>{*AD.BARABOOSCHOOLS.NET*}</JoinDomain>
+                <MachineObjectOU>{*OU=Workstations,DC=ad,DC=barabooschools,DC=net*}</MachineObjectOU>
+            </Identification>
+        </component>
+    </settings>
+    <settings pass="oobeSystem">
+        <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <InputLocale>en-us</InputLocale>
+            <SystemLocale>en-us</SystemLocale>
+            <UILanguage>en-us</UILanguage>
+            <UserLocale>en-us</UserLocale>
+        </component>
+        <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+            <AutoLogon>
+                <Password>
+                    <Value>{*encrypted password of local admin user to log in as first run*}</Value>
+                    <PlainText>false</PlainText>
+                </Password>
+                <Enabled>true</Enabled>
+                <LogonCount>2</LogonCount>
+                <Username>{*username of local admin user to log in as first run*}/Username>
+            </AutoLogon>
+            <FirstLogonCommands>
+                <SynchronousCommand wcm:action="add">
+                    <CommandLine>cscript //b c:\windows\system32\slmgr.vbs /ipk {*Win7 KMS license key*}</CommandLine>
+                    <Order>2</Order>
+                    <RequiresUserInput>false</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>3</Order>
+                    <CommandLine>cscript //b c:\windows\system32\slmgr.vbs /ato</CommandLine>
+                    <RequiresUserInput>false</RequiresUserInput>
+                </SynchronousCommand>
+                <SynchronousCommand wcm:action="add">
+                    <Order>1</Order>
+                    <CommandLine>cscript //b c:\windows\system32\slmgr.vbs /skms ad-sdob.ad.barabooschools.net</CommandLine>
+                </SynchronousCommand>
+            </FirstLogonCommands>
+            <RegisteredOrganization>SDOB</RegisteredOrganization>
+            <RegisteredOwner>SDOB</RegisteredOwner>
+            <ShowWindowsLive>false</ShowWindowsLive>
+            <OOBE>
+                <HideEULAPage>true</HideEULAPage>
+                <NetworkLocation>Home</NetworkLocation>
+                <ProtectYourPC>1</ProtectYourPC>
+            </OOBE>
+            <UserAccounts>
+                <LocalAccounts>
+                    <LocalAccount wcm:action="add">
+                        <Password>
+                            <Value>{*Encrypted password of local admin user to add*}</Value>
+                            <PlainText>false</PlainText>
+                        </Password>
+                        <Description>Local Administrator</Description>
+                        <DisplayName>{*Display name of local admin user to add*}</DisplayName>
+                        <Group>Administrators</Group>
+                        <Name>{*Username of local admin user to add*}</Name>
+                    </LocalAccount>
+                </LocalAccounts>
+            </UserAccounts>
+        </component>
+    </settings>
+    <cpi:offlineImage cpi:source="catalog:e:/win7_source/sources/install_windows 7 professional.clg" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
+</unattend>
